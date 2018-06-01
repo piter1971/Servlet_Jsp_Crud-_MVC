@@ -1,0 +1,64 @@
+			*****************************************************************************************
+			*********Este ejercicio tendra Servlet , Jsp , BBDD  con sistema Crud********************
+			*****************************************************************************************
+Uilizaremos un Pool de conexiones:
+								- cuando el usuario haya hecho una peticion al servidor este se conecta a la BBDD
+								- una vez haya tenido la informacion de BBDD  , el servidor cierra la conexion al BBDD
+								- y envia la informacio al usuario.
+								- El usuario acto seguido podria volver a hacer otra peticion al servidor por lo que este tendria que volver a abrir y cerrar
+								- La conexion gastando recursos y si son muchos usuarios podria provocar un error.
+								- Para eso exisste el POOL ce conexiones que son una conexioes a la BBDD que se mantenen abiertas (5 ,10 ,20 conexiones)
+								- que aunque tambien  consume recursos seria menos que abrir y cerrar coneciones.
+								
+POOL conexion: 
+				- Si decedimo crear 10 conexion , el conecionManager le dara alos primeros 10 usuarios una conexion el usuario numero 1 estaria a la 
+					espera a que un ausuario deje libre una conexion , si esta bien programado el programa no cae lanza una exeption
+				- Como programador podemos decedir la cantidad de conexiones abiertas , cuantas pueden permanecer inactivas
+								 
+Pasos a seguir : 
+				1). Descargar el Driver para JDBC para MySql
+				2). Colocar el Driver en  "WEB-INF/lib"
+				3). Definir el pool de conexiones en "META-INF/context.xml"
+				4). Crear una referencia al pool de conexiones desde codigo java
+				
+				
+*************************************************************************************
+************************HOJA de RUTA PROJECTO****************************************
+*************************************************************************************
+1).  Crear objeto de tipo producto (por la tabla producto de la BD curso_sql) 
+		=>  Class  Producto.java
+			- 7 variables que coinciden con los campos de la base de datos.
+			- 2 contructores 1 con todo los campos , otro con todos los campos menos cod articulo
+			- los Getters y Setters
+		
+2).  Crear modelo
+				=> ModeloProducto.java
+					- variable tipo DATASOURCE 
+					- Constructor  con variable DATASOURCE
+					- Metodo tipo List <Producto> contiene:
+						//----- una ArrayList para almacenar todos los campos de la BD---
+						List <Producto> listProd = new ArrayList <>();
+						//---------establecer conexion----------
+						* Connection	miCon=dataSource.getConnection();
+						//-----------crear sentencia sql--------
+						* String instruccionQueri = "SELECT * FROM productos";		
+						* Statment	miStat=miCon.createStatement();
+						//----------ejecutar sql---------------
+						* Resultset miRes=miStat.executeQuery(instruccionQueri);
+						* while(miRes.next){
+							 //------ Variables para cada campos de la BD 
+						  	*-* String codArt = miRes.getString(1);
+							 	 ....
+							 	 ....
+							 	 ....
+						 
+						 	 //--- instanciar la clase Producto con Constructor todos los campos
+						 	*-* Producto temProd = new Producto(codArt,.......);
+						  	 //------------Añadir al ArrayList-------------
+						  	*-* listProd.add(tempProd)
+							}
+						return listProd;
+		
+3).  Crear controlador.
+4).  Crear la pagina JSP.
+
